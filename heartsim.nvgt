@@ -1,7 +1,7 @@
 #include"sound_pool.nvgt"
 #include"speech.nvgt"
 int heartslot;
-int bpm=100, scopetime=1000, hearttype=3, typesound=1;
+int bpm=100, scopetime=1000, hearttype=2, typesound=1;
 timer scopetimer;
 sound_pool pool;
 void main()
@@ -38,29 +38,13 @@ heartslot=pool.play_stationary("sounds/heartbeat3.wav",false);
 scopetimer.restart();
 }
 }
-if(typesound==1 and scopetimer.elapsed>=scopetime)
-{
-if(hearttype==4)
-{
-heartslot=pool.play_stationary("sounds/hartmon4.ogg",false);
-scopetimer.restart();
-}
-}
-if(typesound==1 and scopetimer.elapsed>=scopetime)
-{
-if(hearttype==5)
-{
-heartslot=pool.play_stationary("sounds/hartmon5.ogg",false);
-scopetimer.restart();
-}
-}
 if(key_repeating(KEY_T))
 {
 speak("heart type, "+hearttype);
 }
 if(key_repeating(KEY_H))
 {
-if(hearttype==1||hearttype==2||hearttype==3||hearttype==4||hearttype==5)
+if(hearttype==1 || hearttype==2 || hearttype==3)
 {
 speak("heart rate, "+bpm+" beats per minute.");
 }
@@ -104,7 +88,7 @@ if(key_repeating(KEY_LEFT) and hearttype!=1)
 hearttype-=1;
 speak(hearttype);
 }
-if(key_repeating(KEY_RIGHT) and hearttype!=5)
+if(key_repeating(KEY_RIGHT) and hearttype!=3)
 {
 hearttype+=1;
 speak(hearttype);
