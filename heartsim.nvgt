@@ -1,7 +1,7 @@
 #include"sound_pool.nvgt"
 #include"speech.nvgt"
 int heartslot;
-int bpm=100, scopetime=1000, hearttype=2, typesound=1;
+int bpm=10, scopetime=1900, hearttype=1, heartsound=1;
 timer scopetimer;
 sound_pool pool;
 void main()
@@ -14,7 +14,7 @@ void heartsim()
 while(true)
 {
 wait(5);
-if(typesound==1 and scopetimer.elapsed>=scopetime)
+if(heartsound==1 and scopetimer.elapsed>=scopetime)
 {
 if(hearttype==1)
 {
@@ -22,7 +22,7 @@ heartslot=pool.play_stationary("sounds/heartbeat1.wav", false);
 scopetimer.restart();
 }
 }
-if(typesound==1 and scopetimer.elapsed>=scopetime)
+if(heartsound==1 and scopetimer.elapsed>=scopetime)
 {
 if(hearttype==2)
 {
@@ -30,7 +30,7 @@ heartslot=pool.play_stationary("sounds/heartbeat2.wav",false);
 scopetimer.restart();
 }
 }
-if(typesound==1 and scopetimer.elapsed>=scopetime)
+if(heartsound==1 and scopetimer.elapsed>=scopetime)
 {
 if(hearttype==3)
 {
@@ -42,46 +42,38 @@ if(key_repeating(KEY_T))
 {
 speak("heart type, "+hearttype);
 }
-if(key_repeating(KEY_H))
+if(key_repeating(KEY_H) and hearttype==1 || hearttype==2 || hearttype==3)
 {
-if(hearttype==1 || hearttype==2 || hearttype==3)
-{
-speak("heart rate, "+bpm+" beats per minute.");
-}
+speak("heart rate, "+bpm+" beats per minute, "+scopetime+" ms.");
 }
 if(key_repeating(KEY_RETURN))
 {
-if(typesound==1)
+if(heartsound==1)
 {
+heartsound=0;
 pool.destroy_sound(heartslot);
-typesound=0;
 pool.play_stationary("sounds/toggleoff.ogg", false);
 speak("Monidor off");
 }
 else
 {
-typesound=1;
-speak("Monidor on");
+heartsound=1;
+pool.destroy_sound(heartslot);
 pool.play_stationary("sounds/toggleon.ogg", false);
+speak("Monidor on");
 }
 }
-if(key_repeating(KEY_UP))
-{
-if(scopetime!=400)
+if(key_repeating(KEY_UP) and bpm!=195)
 {
 bpm+=5;
 scopetime-=50;
 speak(bpm);
 }
-}
-if (key_repeating(KEY_DOWN))
-{
-if(scopetime!=1600)
+if (key_repeating(KEY_DOWN) and bpm!=10)
 {
 bpm-=5;
 scopetime+=50;
 speak(bpm);
-}
 }
 if(key_repeating(KEY_LEFT) and hearttype!=1)
 {
