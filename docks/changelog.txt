@@ -1,6 +1,6 @@
 new in 1.0
 Increased the bpm upper limit from 150 to 195.
-Increased the bpm lower limit from 50 to 10.
+Increased the bpm lower limit from 50 to 5.
 The bpm upper limit is now fixed to 150. The parameter can no longer go abuv this vallue.
 The bpm  lower limit is now fixed to 50. The parameter can no longer go abuv this vallue.
 You can now press the enter key to pause/resume the heartbeat timer. This will mute the sound being played as well.
