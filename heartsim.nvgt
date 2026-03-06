@@ -1,0 +1,117 @@
+#include"sound_pool.nvgt"
+#include"speech.nvgt"
+int heartslot;
+int bpm=100, scopetime=1000, hearttype=3, typesound=1;
+timer scopetimer;
+sound_pool pool;
+void main()
+{
+show_window("HeartbeatSimulator");
+heartsim();
+}
+void heartsim()
+{
+while(true)
+{
+wait(5);
+if(typesound==1 and scopetimer.elapsed>=scopetime)
+{
+if(hearttype==1)
+{
+heartslot=pool.play_stationary("sounds/heartbeat1.wav", false);
+scopetimer.restart();
+}
+}
+if(typesound==1 and scopetimer.elapsed>=scopetime)
+{
+if(hearttype==2)
+{
+heartslot=pool.play_stationary("sounds/heartbeat2.wav",false);
+scopetimer.restart();
+}
+}
+if(typesound==1 and scopetimer.elapsed>=scopetime)
+{
+if(hearttype==3)
+{
+heartslot=pool.play_stationary("sounds/heartbeat3.wav",false);
+scopetimer.restart();
+}
+}
+if(typesound==1 and scopetimer.elapsed>=scopetime)
+{
+if(hearttype==4)
+{
+heartslot=pool.play_stationary("sounds/hartmon4.ogg",false);
+scopetimer.restart();
+}
+}
+if(typesound==1 and scopetimer.elapsed>=scopetime)
+{
+if(hearttype==5)
+{
+heartslot=pool.play_stationary("sounds/hartmon5.ogg",false);
+scopetimer.restart();
+}
+}
+if(key_repeating(KEY_T))
+{
+speak("heart type, "+hearttype);
+}
+if(key_repeating(KEY_H))
+{
+if(hearttype==1||hearttype==2||hearttype==3||hearttype==4||hearttype==5)
+{
+speak("heart rate, "+bpm+" beats per minute.");
+}
+}
+if(key_repeating(KEY_RETURN))
+{
+if(typesound==1)
+{
+pool.destroy_sound(heartslot);
+typesound=0;
+pool.play_stationary("sounds/toggleoff.ogg", false);
+speak("Monidor off");
+}
+else
+{
+typesound=1;
+speak("Monidor on");
+pool.play_stationary("sounds/toggleon.ogg", false);
+}
+}
+if(key_repeating(KEY_UP))
+{
+if(scopetime!=400)
+{
+bpm+=5;
+scopetime-=50;
+speak(bpm);
+}
+}
+if (key_repeating(KEY_DOWN))
+{
+if(scopetime!=1600)
+{
+bpm-=5;
+scopetime+=50;
+speak(bpm);
+}
+}
+if(key_repeating(KEY_LEFT) and hearttype!=1)
+{
+hearttype-=1;
+speak(hearttype);
+}
+if(key_repeating(KEY_RIGHT) and hearttype!=5)
+{
+hearttype+=1;
+speak(hearttype);
+}
+if(key_repeating(KEY_ESCAPE))
+{
+exit();
+}
+}
+}

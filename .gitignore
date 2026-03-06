@@ -1,0 +1,10 @@
+*.ogg
+*.wav
+*.mp3
+
+*.ini
+
+New File*.txt
+
+lib/
+releases/
