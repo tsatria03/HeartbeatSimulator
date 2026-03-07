@@ -1,9 +1,8 @@
 #include"sound_pool.nvgt"
 #include"speech.nvgt"
-int heartslot;
-    int respslot=-1;
-int resptype=0;
-int bpm=40, respset=0, scopetime=1600, hearttype=1, heartsound=1;
+double heartvolume=0, respvolume=-10;
+int heartslot, respslot;
+int bpm=50, scopetime=1500, heartsound=1, respset=0, hearttype=1, resptype=0;
 timer scopetimer;
 sound_pool pool;
 void main()
@@ -36,13 +35,13 @@ if(heartsound==1)
         resptype=newresptype;
         if(resptype>0)
         {
-            respslot=pool.play_stationary_extended("sounds/respiration"+resptype+".wav", true, 0, 0, -5, 100, false);
+            respslot=pool.play_stationary_extended("sounds/respiration"+resptype+".wav", true, 0, 0, respvolume, 100, false);
         }
     }
 }
 if(heartsound==1 and scopetimer.elapsed>=scopetime)
 {
-heartslot = pool.play_stationary("sounds/heartbeat"+hearttype+".wav", false);
+heartslot=pool.play_stationary_extended("sounds/heartbeat"+hearttype+".wav", false, 0, 0, heartvolume, 100, false);
 scopetimer.restart();
 }
 if(key_repeating(KEY_T))
