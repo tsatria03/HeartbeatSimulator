@@ -1,7 +1,9 @@
 #include"sound_pool.nvgt"
 #include"speech.nvgt"
 int heartslot;
-int bpm=5, scopetime=1950, hearttype=1, heartsound=1;
+    int respslot=-1;
+int resptype=0;
+int bpm=40, scopetime=1600, hearttype=1, heartsound=1;
 timer scopetimer;
 sound_pool pool;
 void main()
@@ -14,23 +16,34 @@ void heartsim()
 while(true)
 {
 wait(5);
+if(heartsound==1)
+{
+    int newresptype=0;
+    if(bpm>=55 and bpm<=155)
+    {
+        if(bpm<=70) newresptype=1;
+        else if(bpm<=90) newresptype=2;
+        else if(bpm<=120) newresptype=3;
+        else newresptype=4;
+    }
+    if(newresptype!=resptype)
+    {
+        if(respslot!=-1)
+        {
+            pool.destroy_sound(respslot);
+            respslot=-1;
+        }
+        resptype=newresptype;
+        if(resptype>0)
+        {
+            respslot=pool.play_stationary_extended("sounds/respiration"+resptype+".wav", true, 0, 0, -5, 100, false);
+        }
+    }
+}
 if(heartsound==1 and scopetimer.elapsed>=scopetime)
 {
-if(hearttype==1)
-{
-heartslot=pool.play_stationary("sounds/heartbeat1.wav", false);
+heartslot = pool.play_stationary("sounds/heartbeat"+hearttype+".wav", false);
 scopetimer.restart();
-}
-if(hearttype==2)
-{
-heartslot=pool.play_stationary("sounds/heartbeat2.wav",false);
-scopetimer.restart();
-}
-if(hearttype==3)
-{
-heartslot=pool.play_stationary("sounds/heartbeat3.wav",false);
-scopetimer.restart();
-}
 }
 if(key_repeating(KEY_T))
 {
@@ -45,27 +58,45 @@ if(key_repeating(KEY_RETURN))
 if(heartsound==1)
 {
 heartsound=0;
+if(respslot!=-1)
+{
+pool.destroy_sound(respslot);
+respslot=-1;
+}
+resptype=0;
 pool.destroy_sound(heartslot);
 pool.play_stationary("sounds/toggleoff.ogg", false);
-speak("Heart monidor off.");
+speak("Heart monitor off.");
 }
 else
 {
 heartsound=1;
 pool.play_stationary("sounds/toggleon.ogg", false);
-speak("Heart monidor on.");
+speak("Heart monitor on.");
 }
 }
 if(key_repeating(KEY_UP) and bpm!=195)
 {
 bpm+=5;
 scopetime-=50;
+if(respslot!=-1)
+{
+pool.destroy_sound(respslot);
+respslot=-1;
+}
+resptype=0;
 speak(bpm);
 }
 if (key_repeating(KEY_DOWN) and bpm!=5)
 {
 bpm-=5;
 scopetime+=50;
+if(respslot!=-1)
+{
+pool.destroy_sound(respslot);
+respslot=-1;
+}
+resptype=0;
 speak(bpm);
 }
 if(key_repeating(KEY_LEFT) and hearttype!=1)
