@@ -3,7 +3,7 @@
 int heartslot;
     int respslot=-1;
 int resptype=0;
-int bpm=40, scopetime=1600, hearttype=1, heartsound=1;
+int bpm=40, respset=0, scopetime=1600, hearttype=1, heartsound=1;
 timer scopetimer;
 sound_pool pool;
 void main()
@@ -65,13 +65,13 @@ respslot=-1;
 }
 resptype=0;
 pool.destroy_sound(heartslot);
-pool.play_stationary("sounds/toggleoff.ogg", false);
+pool.play_stationary("sounds/toggleoff.ogg",false);
 speak("Heart monitor off.");
 }
 else
 {
 heartsound=1;
-pool.play_stationary("sounds/toggleon.ogg", false);
+pool.play_stationary("sounds/toggleon.ogg",false);
 speak("Heart monitor on.");
 }
 }
@@ -79,34 +79,58 @@ if(key_repeating(KEY_UP) and bpm!=195)
 {
 bpm+=5;
 scopetime-=50;
+if(respset==1)
+{
 if(respslot!=-1)
 {
 pool.destroy_sound(respslot);
 respslot=-1;
 }
 resptype=0;
+}
 speak(bpm);
 }
 if (key_repeating(KEY_DOWN) and bpm!=5)
 {
 bpm-=5;
 scopetime+=50;
+if(respset==1)
+{
 if(respslot!=-1)
 {
 pool.destroy_sound(respslot);
 respslot=-1;
 }
 resptype=0;
+}
 speak(bpm);
 }
 if(key_repeating(KEY_LEFT) and hearttype!=1)
 {
 hearttype-=1;
+if(respset==1)
+{
+if(respslot!=-1)
+{
+pool.destroy_sound(respslot);
+respslot=-1;
+}
+resptype=0;
+}
 speak(hearttype);
 }
 if(key_repeating(KEY_RIGHT) and hearttype!=3)
 {
 hearttype+=1;
+if(respset==1)
+{
+if(respslot!=-1)
+{
+pool.destroy_sound(respslot);
+respslot=-1;
+}
+resptype=0;
+}
 speak(hearttype);
 }
 if(key_repeating(KEY_ESCAPE))
